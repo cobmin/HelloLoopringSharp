@@ -4,6 +4,10 @@ using HelloLoopringSharp.Helpers;
 using Microsoft.Extensions.Configuration;
 using Nethereum.Signer;
 using Newtonsoft.Json;
+using System.Globalization;
+using System.Numerics;
+using System.Security.Cryptography;
+using System.Text;
 
 IConfiguration config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
@@ -22,5 +26,21 @@ Console.WriteLine($"Account Details: {JsonConvert.SerializeObject(account, Forma
 
 //Testing signer
 var ethereumSigner = new EthereumMessageSigner();
-var signature = ethereumSigner.EncodeUTF8AndSign(account.keySeed, new EthECKey(settings.MetamaskPrivateKey));
-Console.WriteLine(signature);
+var messageSignature = ethereumSigner.EncodeUTF8AndSign(account.keySeed, new EthECKey(settings.MetamaskPrivateKey));
+Console.WriteLine(messageSignature);
+
+byte[] requestBytes = Encoding.UTF8.GetBytes(messageSignature);
+SHA256Managed sha256Managed = new SHA256Managed();
+byte[] sha256HashBytes = sha256Managed.ComputeHash(requestBytes);
+string sha256HashString = string.Empty;
+foreach (byte x in sha256HashBytes)
+{
+    sha256HashString += String.Format("{0:x2}", x);
+}
+
+BigInteger sha256HashNumber = BigInteger.Parse(sha256HashString, NumberStyles.AllowHexSpecifier);
+if (sha256HashNumber.Sign == -1)
+{
+    string sha256HashAsPositiveHexString = "0" + sha256HashString;
+    sha256HashNumber = BigInteger.Parse(sha256HashAsPositiveHexString, NumberStyles.AllowHexSpecifier);
+}
