@@ -81,15 +81,15 @@ namespace HelloLoopringSharp.Helpers
             byte[] seed = sha256Managed.ComputeHash(rawKeyBytes);
 
             var lebuffResult = leBuff2Int(seed);
-            var secertKey = leBuff2Int(seed) % suborder;
+            var secretKey = leBuff2Int(seed) % suborder;
             BigInteger[] publicKey = new BigInteger[2];
 
             // Have this logic to save on computing resources. No reason to calculate them unless needed
             // The only time we actually need these is if the user wants to export their wallet
             if (!skipPublicKeyCalculation)
-                publicKey = mulPointEscalar(Base8, secertKey, p);
+                publicKey = mulPointEscalar(Base8, secretKey, p);
 
-            return ("0x" + publicKey[0].ToString("x").PadLeft(64, '0'), "0x" + publicKey[1].ToString("x").PadLeft(64, '0'), "0x" + secertKey.ToString("x").PadLeft(63, '0'), rawKey.ethAddress);
+            return ("0x" + publicKey[0].ToString("x").PadLeft(64, '0'), "0x" + publicKey[1].ToString("x").PadLeft(64, '0'), "0x" + secretKey.ToString("x").PadLeft(63, '0'), rawKey.ethAddress);
         }
         public static BigInteger ParseHexUnsigned(string toParse)
         {
