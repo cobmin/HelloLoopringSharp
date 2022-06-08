@@ -4,6 +4,7 @@ using HelloLoopringSharp.Helpers;
 using Microsoft.Extensions.Configuration;
 using Nethereum.Signer;
 using Newtonsoft.Json;
+using PoseidonSharp;
 using System.Globalization;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -43,4 +44,12 @@ if (sha256HashNumber.Sign == -1)
 {
     string sha256HashAsPositiveHexString = "0" + sha256HashString;
     sha256HashNumber = BigInteger.Parse(sha256HashAsPositiveHexString, NumberStyles.AllowHexSpecifier);
+}
+
+var sha256Hex = sha256HashNumber.ToString("x");
+Console.WriteLine(sha256Hex);
+
+if(sha256Hex.Length % 2 == 0)
+{
+    sha256Hex = "0" + sha256Hex;
 }
