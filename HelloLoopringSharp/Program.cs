@@ -25,31 +25,7 @@ Console.WriteLine($"Relayer Timestamp: {JsonConvert.SerializeObject(timestamp, F
 var account = await loopringClient.GetAccount("0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd", 40940);
 Console.WriteLine($"Account Details: {JsonConvert.SerializeObject(account, Formatting.Indented)}");
 
-//Testing signer
+//Generate eddsaKeyPair
 var ethereumSigner = new EthereumMessageSigner();
 var messageSignature = ethereumSigner.EncodeUTF8AndSign(account.keySeed, new EthECKey(settings.MetamaskPrivateKey));
-Console.WriteLine(messageSignature);
-
-byte[] requestBytes = Encoding.UTF8.GetBytes(messageSignature);
-SHA256Managed sha256Managed = new SHA256Managed();
-byte[] sha256HashBytes = sha256Managed.ComputeHash(requestBytes);
-string sha256HashString = string.Empty;
-foreach (byte x in sha256HashBytes)
-{
-    sha256HashString += String.Format("{0:x2}", x);
-}
-
-BigInteger sha256HashNumber = BigInteger.Parse(sha256HashString, NumberStyles.AllowHexSpecifier);
-if (sha256HashNumber.Sign == -1)
-{
-    string sha256HashAsPositiveHexString = "0" + sha256HashString;
-    sha256HashNumber = BigInteger.Parse(sha256HashAsPositiveHexString, NumberStyles.AllowHexSpecifier);
-}
-
-var sha256Hex = sha256HashNumber.ToString("x");
-Console.WriteLine(sha256Hex);
-
-if(sha256Hex.Length % 2 == 0)
-{
-    sha256Hex = "0" + sha256Hex;
-}
+var eddsaKeyPair = PoseidonHelper.GetL2PKFromMetaMask(messageSignature);
