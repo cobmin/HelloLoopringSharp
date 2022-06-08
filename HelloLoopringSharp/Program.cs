@@ -1,6 +1,14 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using HelloLoopringSharp.Client;
+using HelloLoopringSharp.Helpers;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+
+IConfiguration config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json")
+    .AddEnvironmentVariables()
+    .Build();
+Settings settings = config.GetRequiredSection("Settings").Get<Settings>();
 
 ILoopringClient loopringClient = new LoopringClient();
 
