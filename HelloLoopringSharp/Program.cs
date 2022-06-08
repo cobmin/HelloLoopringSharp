@@ -28,4 +28,4 @@ Console.WriteLine($"Account Details: {JsonConvert.SerializeObject(account, Forma
 //Generate eddsaKeyPair
 var ethereumSigner = new EthereumMessageSigner();
 var messageSignature = ethereumSigner.EncodeUTF8AndSign(account.keySeed, new EthECKey(settings.MetamaskPrivateKey));
-var eddsaKeyPair = PoseidonHelper.GetL2PKFromMetaMask(messageSignature);
+var layerTwoPrivateKey = EcdsaSigningHelper.GetLayerTwoPrivateKeyFromLayerOnePrivateKey(messageSignature).secretKey;

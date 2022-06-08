@@ -8,49 +8,9 @@ using System.Security.Cryptography;
 
 namespace HelloLoopringSharp.Helpers
 {
-    public static class PoseidonHelper
+    public static class EcdsaSigningHelper
     {
-
-        public static KPair GenerateKeyPair(BigInteger seed)
-        {
-
-            var secretKey = seed % KPair.BabyJubSubOrder;
-            var publicKey = PoseidonSharp.Point.Multiply(secretKey, PoseidonSharp.Point.Generator());
-
-
-            return new KPair()
-            {
-                PublicKeyX = "0x" + (publicKey.Item1.ToString("x")),
-                PublicKeyY = "0x" + (publicKey.Item2.ToString("x")),
-                SecretKey = "0x" + (secretKey.ToString("x")),
-            };
-        }
-
-
-        public static BigInteger CalculateBlake2BHash(BigInteger data)
-        {
-            var sourceData = data.ToByteArray();
-            if (sourceData.Length <= 32) //pad out bytes
-            {
-                var blake2bHash = Blake2b.ComputeHash(32, sourceData);
-                var positiveHashBytes = new byte[blake2bHash.Length + 1];
-                Array.Copy(blake2bHash, positiveHashBytes, blake2bHash.Length);
-                BigInteger positiveBigInt = new BigInteger(positiveHashBytes);
-                return positiveBigInt;
-            }
-            else //truncate bytes
-            {
-                var truncatedBytes = new byte[32];
-                Array.Copy(sourceData, truncatedBytes, truncatedBytes.Length);
-                var blake2BHashBytes = Blake2b.ComputeHash(32, truncatedBytes);
-                var positiveHashBytes = new byte[blake2BHashBytes.Length + 1];
-                Array.Copy(blake2BHashBytes, positiveHashBytes, blake2BHashBytes.Length);
-                BigInteger positiveBigInt = new BigInteger(positiveHashBytes);
-                return positiveBigInt;
-            }
-        }
-
-        public static (string publicKeyX, string publicKeyY, string secretKey, string ethAddress) EDDSASignMetamask(string _seed, bool skipPublicKeyCalculation = false, bool nextNonce = false)
+        public static (string publicKeyX, string publicKeyY, string secretKey, string ethAddress) ECDSASignMetamask(string _seed, bool skipPublicKeyCalculation = false, bool nextNonce = false)
         {
             // Requesting metamask to sign our package so we can tare it apart and get our public and secret keys
             // var rawKey = MetamaskServer.L2Authenticate("We need you to sign this message in Metamask in order to access your Layer 2 wallet", exchangeAddress, apiUrl, nextNonce);
@@ -58,13 +18,12 @@ namespace HelloLoopringSharp.Helpers
             return RipKeyAppart((_seed, ""), skipPublicKeyCalculation);
         }
 
-        public static (string secretKey, string ethAddress, string publicKeyX, string publicKeyY) GetL2PKFromMetaMask(string seed)
+        public static (string secretKey, string ethAddress, string publicKeyX, string publicKeyY) GetLayerTwoPrivateKeyFromLayerOnePrivateKey(string seed)
         {
-            var sign = EDDSASignMetamask(seed, true);
+            var sign = ECDSASignMetamask(seed, true);
             // We're only interested in the secret key for signing packages. Which ironically is the simplest one to get...
             return (sign.secretKey, sign.ethAddress, sign.publicKeyX, sign.publicKeyY);
         }
-
 
         public static (string publicKeyX, string publicKeyY, string secretKey, string ethAddress) RipKeyAppart((string eddsa, string ethAddress) rawKey, bool skipPublicKeyCalculation = false)
         {
@@ -91,6 +50,7 @@ namespace HelloLoopringSharp.Helpers
 
             return ("0x" + publicKey[0].ToString("x").PadLeft(64, '0'), "0x" + publicKey[1].ToString("x").PadLeft(64, '0'), "0x" + secretKey.ToString("x").PadLeft(63, '0'), rawKey.ethAddress);
         }
+
         public static BigInteger ParseHexUnsigned(string toParse)
         {
             toParse = toParse.Replace("0x", "");
@@ -241,13 +201,4 @@ namespace HelloLoopringSharp.Helpers
             return res;
         }
     }
-    public class KPair
-    {
-        public static readonly BigInteger BabyJubSubOrder = BigInteger.Parse("2736030358979909402780800718157159386076813972158567259200215660948447373041");
-
-        public string PublicKeyX { get; set; }
-        public string PublicKeyY { get; set; }
-        public string SecretKey { get; set; }
-    }
-
 }
