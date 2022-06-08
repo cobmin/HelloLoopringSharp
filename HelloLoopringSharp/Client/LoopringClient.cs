@@ -26,6 +26,16 @@ namespace HelloLoopringSharp.Client
             GC.SuppressFinalize(this);
         }
 
+        public async Task<AccountDetails> GetAccount(string owner, int accountId)
+        {
+            var request = new RestRequest("api/v3/account");
+            request.AddParameter("owner", owner);
+            request.AddParameter("accountId", accountId);
+            var response = await _client.GetAsync(request);
+            var data = JsonConvert.DeserializeObject<AccountDetails>(response.Content);
+            return data;
+        }
+
         public async Task<RelayerTimestamp> GetRelayerTimestamp()
         {
 
