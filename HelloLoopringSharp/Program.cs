@@ -25,7 +25,7 @@ Console.WriteLine($"Relayer Timestamp: {JsonConvert.SerializeObject(timestamp, F
 var account = await loopringClient.GetAccount("0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd", 40940);
 Console.WriteLine($"Account Details: {JsonConvert.SerializeObject(account, Formatting.Indented)}");
 
-//Generate eddsaKeyPair
+//Generate eddsaKeyPair from Metamask private key
 var ethereumSigner = new EthereumMessageSigner();
 var messageSignature = ethereumSigner.EncodeUTF8AndSign(account.keySeed, new EthECKey(settings.MetamaskPrivateKey));
 var layerTwoPrivateKey = EcdsaSigningHelper.GetLayerTwoPrivateKeyFromLayerOnePrivateKey(messageSignature).secretKey;
