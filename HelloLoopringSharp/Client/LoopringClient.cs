@@ -67,8 +67,8 @@ namespace HelloLoopringSharp.Client
               _baseUrl);
             request.AddHeader("X-API-KEY", apiKey);
             request.AddHeader("X-API-SIG", apiSig);
-            request.AlwaysMultipartFormData = true;
-            request.AddParameter("accountId", accountId);
+            request.AddHeader("Accept", "application/json");
+            request.AddParameter("application/json", requestBody, ParameterType.RequestBody);
             var response = await _client.ExecuteAsync(request);
             var data = response.Content;
             return data;
