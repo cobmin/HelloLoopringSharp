@@ -24,5 +24,14 @@ namespace HelloLoopringSharp.Client
         /// <returns>Loopring Account Details</returns>
         /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
         Task<AccountDetails> GetAccount(string owner, int accountId);
+
+        /// <summary>
+        /// Gets the Loopring API Key 
+        /// </summary>
+        /// <param name="layerTwoPrivateKey">Loopring Layer 2 Private Key</param>
+        /// <param name="accountId">Loopring Account Id</param>
+        /// <returns>Loopring API Key</returns>
+        /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
+        Task<ApiKey> GetApiKey(string layerTwoPrivateKey, int accountId);
     }
 }

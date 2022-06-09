@@ -29,3 +29,7 @@ Console.WriteLine($"Account Details: {JsonConvert.SerializeObject(account, Forma
 var ethereumSigner = new EthereumMessageSigner();
 var messageSignature = ethereumSigner.EncodeUTF8AndSign(account.keySeed, new EthECKey(settings.MetamaskPrivateKey));
 var layerTwoPrivateKey = EcdsaSigningHelper.GetLayerTwoPrivateKeyFromLayerOnePrivateKey(messageSignature).secretKey;
+
+var apiKey = await loopringClient.GetApiKey(layerTwoPrivateKey, account.accountId);
+Console.WriteLine($"Api Key: {JsonConvert.SerializeObject(apiKey, Formatting.Indented)}");
+
