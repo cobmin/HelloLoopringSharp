@@ -54,6 +54,26 @@ namespace HelloLoopringSharp.Client
             return data;
         }
 
+        public async Task<string> UpdateApiKey(string layerTwoPrivateKey, int accountId, string apiKey)
+        {
+            string requestBody = "{\"accountId\":" + accountId + "}";
+            var request = new RestRequest("/api/v3/apiKey", Method.Post);
+            var apiSig = UrlHelper.Sign(
+               layerTwoPrivateKey,
+              HttpMethod.Post,
+              null,
+              requestBody,
+              "/api/v3/apiKey",
+              _baseUrl);
+            request.AddHeader("X-API-KEY", apiKey);
+            request.AddHeader("X-API-SIG", apiSig);
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("accountId", accountId);
+            var response = await _client.ExecuteAsync(request);
+            var data = response.Content;
+            return data;
+        }
+
         public async Task<RelayerTimestamp> GetRelayerTimestamp()
         {
 

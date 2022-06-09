@@ -22,7 +22,7 @@ ILoopringClient loopringClient = new LoopringClient();
 var timestamp = await loopringClient.GetRelayerTimestamp();
 Console.WriteLine($"Relayer Timestamp: {JsonConvert.SerializeObject(timestamp, Formatting.Indented)}");
 
-var account = await loopringClient.GetAccount("0x36Cd6b3b9329c04df55d55D41C257a5fdD387ACd", 40940);
+var account = await loopringClient.GetAccount("0x991B6fE54d46e5e0CEEd38911cD4a8694bed386A", 136736);
 Console.WriteLine($"Account Details: {JsonConvert.SerializeObject(account, Formatting.Indented)}");
 
 //Generate eddsaKeyPair from Metamask private key
@@ -32,4 +32,7 @@ var layerTwoPrivateKey = EcdsaSigningHelper.GetLayerTwoPrivateKeyFromLayerOnePri
 
 var apiKey = await loopringClient.GetApiKey(layerTwoPrivateKey, account.accountId);
 Console.WriteLine($"Api Key: {JsonConvert.SerializeObject(apiKey, Formatting.Indented)}");
+
+var apiKey2 = await loopringClient.UpdateApiKey(layerTwoPrivateKey, account.accountId, apiKey.apiKey);
+Console.WriteLine($"Updated Api Key: {JsonConvert.SerializeObject(apiKey2, Formatting.Indented)}");
 
