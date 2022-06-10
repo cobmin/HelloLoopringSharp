@@ -28,13 +28,13 @@ namespace HelloLoopringSharp.Client
             GC.SuppressFinalize(this);
         }
 
-        public async Task<AccountDetailsResponse> GetAccount(GetAccountRequest getAccountRequest)
+        public async Task<GetAccountResponse> GetAccount(GetAccountRequest getAccountRequest)
         {
             var request = new RestRequest("/api/v3/account");
             request.AddParameter("owner", getAccountRequest.owner);
             request.AddParameter("accountId", getAccountRequest.accountId);
             var response = await _client.GetAsync(request);
-            var data = JsonConvert.DeserializeObject<AccountDetailsResponse>(response.Content);
+            var data = JsonConvert.DeserializeObject<GetAccountResponse>(response.Content);
             return data;
         }
 
@@ -76,12 +76,27 @@ namespace HelloLoopringSharp.Client
             return data;
         }
 
-        public async Task<RelayerTimestampResponse> GetRelayerTimestamp()
+        public async Task<GetRelayerTimestampResponse> GetRelayerTimestamp()
         {
 
             var request = new RestRequest("/api/v3/timestamp");
             var response = await _client.GetAsync(request);
-            var data = JsonConvert.DeserializeObject<RelayerTimestampResponse>(response.Content);
+            var data = JsonConvert.DeserializeObject<GetRelayerTimestampResponse>(response.Content);
+            return data;
+        }
+
+        public async Task<GetStorageIdResponse> GetStorageId(string apiKey, GetStorageIdRequest getStorageIdRequest)
+        {
+            var request = new RestRequest("/api/v3/storageId");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("accountId", getStorageIdRequest.accountId);
+            request.AddParameter("sellTokenId", getStorageIdRequest.sellTokenId);
+            if(getStorageIdRequest.maxNext.HasValue)
+            {
+                request.AddParameter("maxNext", getStorageIdRequest.maxNext.Value);
+            }
+            var response = await _client.GetAsync(request);
+            var data = JsonConvert.DeserializeObject<GetStorageIdResponse>(response.Content);
             return data;
         }
     }

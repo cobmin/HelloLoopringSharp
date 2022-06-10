@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace HelloLoopringSharp.ApiResponses
 {
-    public class RelayerTimestampResponse
+    public class GetStorageIdResponse
     {
-        public long timestamp { get; set; }
+        public int orderId {get;set;}
+        public int offchainId { get; set; }
     }
 }

@@ -46,3 +46,12 @@ UpdateApiKeyRequest updateApiKeyRequest = new UpdateApiKeyRequest()
 var apiKey2 = await loopringClient.UpdateApiKey(layerTwoPrivateKey, apiKey.apiKey, updateApiKeyRequest);
 Console.WriteLine($"Updated Api Key: {JsonConvert.SerializeObject(apiKey2, Formatting.Indented)}");
 
+GetStorageIdRequest getStorageIdRequest = new GetStorageIdRequest()
+{
+    accountId = account.accountId,
+    sellTokenId = 1
+};
+var storageId = await loopringClient.GetStorageId(apiKey2.apiKey, getStorageIdRequest);
+Console.WriteLine($"Storage id: {JsonConvert.SerializeObject(storageId, Formatting.Indented)}");
+
+

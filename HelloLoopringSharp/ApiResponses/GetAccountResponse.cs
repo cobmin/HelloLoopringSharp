@@ -12,7 +12,7 @@ namespace HelloLoopringSharp.ApiResponses
         public string y { get; set; }
     }
 
-    public class AccountDetailsResponse
+    public class GetAccountResponse
     {
         public int accountId { get; set; }
         public string owner { get; set; }
