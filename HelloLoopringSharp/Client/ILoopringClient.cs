@@ -1,4 +1,5 @@
-﻿using HelloLoopringSharp.ApiResponses;
+﻿using HelloLoopringSharp.ApiRequests;
+using HelloLoopringSharp.ApiResponses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace HelloLoopringSharp.Client
         /// </summary>
         /// <returns>Relayer Timestamp in milleseconds</returns>
         /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
-        Task<RelayerTimestamp> GetRelayerTimestamp();
+        Task<RelayerTimestampResponse> GetRelayerTimestamp();
 
         /// <summary>
         /// Gets the Loopring Account Details
@@ -23,7 +24,7 @@ namespace HelloLoopringSharp.Client
         /// <param name="accountId">Loopring Account Id</param>
         /// <returns>Loopring Account Details</returns>
         /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
-        Task<AccountDetails> GetAccount(string owner, int accountId);
+        Task<AccountDetailsResponse> GetAccount(GetAccountRequest getAccountRequest);
 
         /// <summary>
         /// Gets the Loopring API Key 
@@ -32,16 +33,16 @@ namespace HelloLoopringSharp.Client
         /// <param name="accountId">Loopring Account Id</param>
         /// <returns>Loopring API Key</returns>
         /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
-        Task<ApiKey> GetApiKey(string layerTwoPrivateKey, int accountId);
+        Task<ApiKeyResponse> GetApiKey(string layerTwoPrivateKey, int accountId);
 
         /// <summary>
         /// Gets the Loopring API Key 
         /// </summary>
         /// <param name="layerTwoPrivateKey">Loopring Layer 2 Private Key</param>
-        /// <param name="accountId">Loopring Account Id</param>
-        /// <param name="apiKey">Loopring API key</param>
+        /// <param name="apiKey">Loopring api key</param>
+        /// <param name="updateApiKeyRequest">Update api key request</param>
         /// <returns>Loopring API Key</returns>
         /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
-        Task<string> UpdateApiKey(string layerTwoPrivateKey, int accountId, string apiKey);
+        Task<ApiKeyResponse> UpdateApiKey(string layerTwoPrivateKey, string apiKey, UpdateApiKeyRequest updateApiKeyRequest);
     }
 }

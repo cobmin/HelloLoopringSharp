@@ -1,4 +1,5 @@
-﻿using HelloLoopringSharp.ApiResponses;
+﻿using HelloLoopringSharp.ApiRequests;
+using HelloLoopringSharp.ApiResponses;
 using HelloLoopringSharp.Helpers;
 using Newtonsoft.Json;
 using RestSharp;
@@ -27,19 +28,18 @@ namespace HelloLoopringSharp.Client
             GC.SuppressFinalize(this);
         }
 
-        public async Task<AccountDetails> GetAccount(string owner, int accountId)
+        public async Task<AccountDetailsResponse> GetAccount(GetAccountRequest getAccountRequest)
         {
             var request = new RestRequest("/api/v3/account");
-            request.AddParameter("owner", owner);
-            request.AddParameter("accountId", accountId);
+            request.AddParameter("owner", getAccountRequest.owner);
+            request.AddParameter("accountId", getAccountRequest.accountId);
             var response = await _client.GetAsync(request);
-            var data = JsonConvert.DeserializeObject<AccountDetails>(response.Content);
+            var data = JsonConvert.DeserializeObject<AccountDetailsResponse>(response.Content);
             return data;
         }
 
-        public async Task<ApiKey> GetApiKey(string layerTwoPrivateKey, int accountId)
-        {
-            var request = new RestRequest("/api/v3/apiKey");
+        public async Task<ApiKeyResponse> GetApiKey(string layerTwoPrivateKey, int accountId)
+        {       
             var apiSig = UrlHelper.Sign(
                layerTwoPrivateKey,
               HttpMethod.Get,
@@ -47,17 +47,18 @@ namespace HelloLoopringSharp.Client
               null,
               "/api/v3/apiKey",
               _baseUrl);
+            var request = new RestRequest("/api/v3/apiKey");
             request.AddHeader("x-api-sig", apiSig);
             request.AddParameter("accountId", accountId);
             var response = await _client.GetAsync(request);
-            var data = JsonConvert.DeserializeObject<ApiKey>(response.Content);
+            var data = JsonConvert.DeserializeObject<ApiKeyResponse>(response.Content);
             return data;
         }
 
-        public async Task<string> UpdateApiKey(string layerTwoPrivateKey, int accountId, string apiKey)
+        public async Task<ApiKeyResponse> UpdateApiKey(string layerTwoPrivateKey, string apiKey, UpdateApiKeyRequest updateApiKeyRequest)
         {
-            string requestBody = "{\"accountId\":" + accountId + "}";
-            var request = new RestRequest("/api/v3/apiKey", Method.Post);
+            string requestBody = JsonFlattenHelper.Flatten(updateApiKeyRequest);
+            
             var apiSig = UrlHelper.Sign(
                layerTwoPrivateKey,
               HttpMethod.Post,
@@ -65,21 +66,22 @@ namespace HelloLoopringSharp.Client
               requestBody,
               "/api/v3/apiKey",
               _baseUrl);
-            request.AddHeader("X-API-KEY", apiKey);
-            request.AddHeader("X-API-SIG", apiSig);
+            var request = new RestRequest("/api/v3/apiKey", Method.Post);
+            request.AddHeader("x-api-key", apiKey);
+            request.AddHeader("x-api-sig", apiSig);
             request.AddHeader("Accept", "application/json");
             request.AddParameter("application/json", requestBody, ParameterType.RequestBody);
             var response = await _client.ExecuteAsync(request);
-            var data = response.Content;
+            var data = JsonConvert.DeserializeObject<ApiKeyResponse>(response.Content);
             return data;
         }
 
-        public async Task<RelayerTimestamp> GetRelayerTimestamp()
+        public async Task<RelayerTimestampResponse> GetRelayerTimestamp()
         {
 
             var request = new RestRequest("/api/v3/timestamp");
             var response = await _client.GetAsync(request);
-            var data = JsonConvert.DeserializeObject<RelayerTimestamp>(response.Content);
+            var data = JsonConvert.DeserializeObject<RelayerTimestampResponse>(response.Content);
             return data;
         }
     }

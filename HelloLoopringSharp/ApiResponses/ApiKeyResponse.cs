@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace HelloLoopringSharp.ApiResponses
 {
-    public class RelayerTimestamp
+    public class ApiKeyResponse
     {
-        public long timestamp { get; set; }
+        public string apiKey { get; set; }
     }
 }
