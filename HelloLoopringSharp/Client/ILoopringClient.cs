@@ -1,5 +1,6 @@
 ﻿using HelloLoopringSharp.ApiRequests;
 using HelloLoopringSharp.ApiResponses;
+using Maize;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,5 +54,8 @@ namespace HelloLoopringSharp.Client
         /// <returns>The next storage id</returns>
         /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
         Task<GetStorageIdResponse> GetStorageId(string apiKey, GetStorageIdRequest getStorageIdRequest);
+        Task<GetUserCollectionsResponse> GetNftCollection(string apiKey, GetUserCollectionRequest getUserCollectionRequest);
+        Task<GetOffchainFeeResponse> GetOffChainFee(string apiKey, GetOffchainFeeRequest getOffchainFeeRequest);
+        Task<PostMintNftResponse> PostMintNft(string apiKey, PostMintNftRequest postMintRequest);
     }
 }

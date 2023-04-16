@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HelloLoopringSharp.ApiRequests
 {
     public class GetAccountRequest
     {
-        public int accountId { get; set; }
-        public string owner { get; set; }
+        public int AccountId { get; set; }
+        public string? Owner { get; set; }
     }
 }

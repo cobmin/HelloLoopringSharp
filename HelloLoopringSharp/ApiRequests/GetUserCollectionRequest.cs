@@ -5,11 +5,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HelloLoopringSharp.ApiResponses
+namespace HelloLoopringSharp.ApiRequests
 {
-    public class GetRelayerTimestampResponse
+    public class GetUserCollectionRequest
     {
-        [JsonPropertyName("timestamp")]
-        public long Timestamp { get; set; }
+        public string? Owner { get; set; }
     }
 }

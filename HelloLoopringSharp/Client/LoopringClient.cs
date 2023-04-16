@@ -1,19 +1,17 @@
 ﻿using HelloLoopringSharp.ApiRequests;
 using HelloLoopringSharp.ApiResponses;
 using HelloLoopringSharp.Helpers;
+using HelloLoopringSharp.Models;
+using Maize;
 using Newtonsoft.Json;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HelloLoopringSharp.Client
 {
     public class LoopringClient : ILoopringClient, IDisposable
     {
-        const string _baseUrl = "https://api3.loopring.io";
+        //const string _baseUrl = "https://api3.loopring.io";
+        const string _baseUrl = "https://uat2.loopring.io";
 
         readonly RestClient _client;
 
@@ -31,8 +29,8 @@ namespace HelloLoopringSharp.Client
         public async Task<GetAccountResponse> GetAccount(GetAccountRequest getAccountRequest)
         {
             var request = new RestRequest("/api/v3/account");
-            request.AddParameter("owner", getAccountRequest.owner);
-            request.AddParameter("accountId", getAccountRequest.accountId);
+            request.AddParameter("owner", getAccountRequest.Owner);
+            request.AddParameter("accountId", getAccountRequest.AccountId);
             var response = await _client.GetAsync(request);
             var data = JsonConvert.DeserializeObject<GetAccountResponse>(response.Content);
             return data;
@@ -59,17 +57,13 @@ namespace HelloLoopringSharp.Client
         {
             string requestBody = JsonFlattenHelper.Flatten(updateApiKeyRequest);
             
-            var apiSig = UrlHelper.Sign(
-               layerTwoPrivateKey,
-              HttpMethod.Post,
-              null,
-              requestBody,
-              "/api/v3/apiKey",
-              _baseUrl);
+            var apiSig = UrlHelper.Sign(layerTwoPrivateKey, HttpMethod.Post, null, requestBody, "/api/v3/apiKey", _baseUrl);
             var request = new RestRequest("/api/v3/apiKey", Method.Post);
             request.AddHeader("x-api-key", apiKey);
             request.AddHeader("x-api-sig", apiSig);
             request.AddHeader("Accept", "application/json");
+            request.AddParameter("accountId", updateApiKeyRequest.AccountId);
+            // its not accepting the body "{\"resultInfo\":{\"code\":100001,\"message\":\"No body in request to generate signature base string\"}}"
             request.AddParameter("application/json", requestBody, ParameterType.RequestBody);
             var response = await _client.ExecuteAsync(request);
             var data = JsonConvert.DeserializeObject<ApiKeyResponse>(response.Content);
@@ -89,15 +83,71 @@ namespace HelloLoopringSharp.Client
         {
             var request = new RestRequest("/api/v3/storageId");
             request.AddHeader("x-api-key", apiKey);
-            request.AddParameter("accountId", getStorageIdRequest.accountId);
-            request.AddParameter("sellTokenId", getStorageIdRequest.sellTokenId);
-            if(getStorageIdRequest.maxNext.HasValue)
-            {
-                request.AddParameter("maxNext", getStorageIdRequest.maxNext.Value);
-            }
+            request.AddParameter("accountId", getStorageIdRequest.AccountId);
+            request.AddParameter("sellTokenId", getStorageIdRequest.SellTokenId);
+            if(getStorageIdRequest.MaxNext.HasValue)
+                request.AddParameter("maxNext", getStorageIdRequest.MaxNext.Value);
             var response = await _client.GetAsync(request);
             var data = JsonConvert.DeserializeObject<GetStorageIdResponse>(response.Content);
             return data;
         }
+
+        // minting
+        public async Task<GetUserCollectionsResponse> GetNftCollection(string apiKey, GetUserCollectionRequest getUserCollectionRequest)
+        {
+            var request = new RestRequest("/api/v3/nft/collection");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("owner", getUserCollectionRequest.Owner);
+            var response = await _client.GetAsync(request);
+            var data = JsonConvert.DeserializeObject<GetUserCollectionsResponse>(response.Content!);
+            return data;
+        }
+        public async Task<GetOffchainFeeResponse> GetOffChainFee(string apiKey, GetOffchainFeeRequest getOffchainFeeRequest)
+        {
+            var request = new RestRequest("api/v3/user/nft/offchainFee");
+            request.AddHeader("x-api-key", apiKey);
+            request.AddParameter("accountId", getOffchainFeeRequest.AccountId.ToString());
+            request.AddParameter("requestType", getOffchainFeeRequest.RequestType.ToString());
+            request.AddParameter("tokenAddress", getOffchainFeeRequest.TokenAddress);
+            var response = await _client.GetAsync(request);
+            var data = JsonConvert.DeserializeObject<GetOffchainFeeResponse>(response.Content!);
+            return data;
+        }
+        public async Task<PostMintNftResponse> PostMintNft(string apiKey, PostMintNftRequest postMintRequest)
+        {
+            var request = new RestRequest("api/v3/nft/mint");
+            request.AddHeader("x-api-key", apiKey);
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("exchange", postMintRequest.Exchange);
+            request.AddParameter("minterId", postMintRequest.MinterId);
+            request.AddParameter("minterAddress", postMintRequest.MinterAddress);
+            request.AddParameter("toAccountId", postMintRequest.ToAccountId);
+            request.AddParameter("toAddress", postMintRequest.ToAddress);
+            request.AddParameter("nftType", postMintRequest.NftType);
+            request.AddParameter("tokenAddress", postMintRequest.TokenAddress);
+            request.AddParameter("nftId", postMintRequest.NftId);
+            request.AddParameter("amount", postMintRequest.Amount.ToString());
+            request.AddParameter("validUntil", postMintRequest.ValidUntil);
+            request.AddParameter("royaltyPercentage", postMintRequest.RoyaltyPercentage);
+            request.AddParameter("storageId", postMintRequest.StorageId);
+            request.AddParameter("maxFee.tokenId", postMintRequest.MaxFee.TokenId);
+            request.AddParameter("maxFee.amount", postMintRequest.MaxFee.Amount);
+            request.AddParameter("forceToMint", "false");
+            request.AddParameter("royaltyAddress", postMintRequest.RoyaltyAddress);
+            request.AddParameter("counterFactualNftInfo.nftFactory", postMintRequest.CounterFactualNftInfo.nftFactory);
+            request.AddParameter("counterFactualNftInfo.nftOwner", postMintRequest.CounterFactualNftInfo.nftOwner);
+            request.AddParameter("counterFactualNftInfo.nftBaseUri", postMintRequest.CounterFactualNftInfo.nftBaseUri);
+            request.AddParameter("eddsaSignature", postMintRequest.EddsaSignature);
+
+            var response = await _client.ExecutePostAsync(request);
+            var data = JsonConvert.DeserializeObject<PostMintNftResponse>(response.Content!);
+            if(response.StatusDescription == "Bad Request")
+            {
+                Console.WriteLine($"Error Minting: {response.Content}");
+                return null;
+            }
+            return data;
+        }
+
     }
 }

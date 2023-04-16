@@ -2,25 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HelloLoopringSharp.ApiResponses
 {
+
     public class PublicKey
     {
-        public string x { get; set; }
-        public string y { get; set; }
+        [JsonPropertyName("x")]
+        public string? X { get; set; }
+        [JsonPropertyName("y")]
+        public string? Y { get; set; }
     }
 
     public class GetAccountResponse
     {
-        public int accountId { get; set; }
-        public string owner { get; set; }
-        public bool frozen { get; set; }
-        public PublicKey publicKey { get; set; }
-        public string tags { get; set; }
-        public int nonce { get; set; }
-        public int keyNonce { get; set; }
-        public string keySeed { get; set; }
+        [JsonPropertyName("accountId")]
+        public int AccountId { get; set; }
+        [JsonPropertyName("owner")]
+        public string? Owner { get; set; }
+        public bool Frozen { get; set; }
+        [JsonPropertyName("publicKey")]
+        public PublicKey? PublicKey { get; set; }
+        [JsonPropertyName("tags")]
+        public string? Tags { get; set; }
+        [JsonPropertyName("nonce")]
+        public int Nonce { get; set; }
+        [JsonPropertyName("keyNonce")]
+        public int KeyNonce { get; set; }
+        [JsonPropertyName("keySeed")]
+        public string? KeySeed { get; set; }
     }
 }

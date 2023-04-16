@@ -8,7 +8,7 @@ using System.Security.Cryptography;
 
 namespace HelloLoopringSharp.Helpers
 {
-    public static class EcdsaSigningHelper
+    public static class SigningHelper
     {
         public static (string publicKeyX, string publicKeyY, string secretKey, string ethAddress) ECDSASignMetamask(string _seed, bool skipPublicKeyCalculation = false, bool nextNonce = false)
         {
