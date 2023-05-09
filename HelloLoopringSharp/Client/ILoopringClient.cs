@@ -44,15 +44,6 @@ namespace HelloLoopringSharp.Client
         /// <param name="updateApiKeyRequest">Update api key request</param>
         /// <returns>Loopring API Key</returns>
         /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
-        Task<ApiKeyResponse> UpdateApiKey(string layerTwoPrivateKey, string apiKey, UpdateApiKeyRequest updateApiKeyRequest);
-
-        /// <summary>
-        /// Gets the next storage id
-        /// </summary>
-        /// <param name="apiKey">Loopring api key</param>
-        /// <param name="getStorageIdRequest">Storage id request</param>
-        /// <returns>The next storage id</returns>
-        /// <exception cref="System.Exception">Thrown when there is an issue querying the Loopring API endpoint</exception>
         Task<GetStorageIdResponse> GetStorageId(string apiKey, GetStorageIdRequest getStorageIdRequest);
         Task<GetUserCollectionsResponse> GetNftCollection(string apiKey, GetUserCollectionRequest getUserCollectionRequest);
         Task<GetOffchainFeeResponse> GetOffChainFee(string apiKey, GetOffchainFeeRequest getOffchainFeeRequest);

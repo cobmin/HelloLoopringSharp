@@ -1,11 +1,4 @@
-﻿using HelloLoopringSharp.ApiRequests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HelloLoopringSharp.Models
+﻿namespace HelloLoopringSharp.Models
 {
     public class EddsaSignatureForMintRequest
     {

@@ -10,14 +10,12 @@ namespace HelloLoopringSharp.Client
 {
     public class LoopringClient : ILoopringClient, IDisposable
     {
-        //const string _baseUrl = "https://api3.loopring.io";
-        const string _baseUrl = "https://uat2.loopring.io";
-
         readonly RestClient _client;
-
-        public LoopringClient()
+        string _baseUrl;
+        public LoopringClient(string url)
         {
-            _client = new RestClient(_baseUrl);
+            _client = new RestClient(url);
+            _baseUrl = url;
         }
 
         public void Dispose()
@@ -49,23 +47,6 @@ namespace HelloLoopringSharp.Client
             request.AddHeader("x-api-sig", apiSig);
             request.AddParameter("accountId", accountId);
             var response = await _client.GetAsync(request);
-            var data = JsonConvert.DeserializeObject<ApiKeyResponse>(response.Content);
-            return data;
-        }
-
-        public async Task<ApiKeyResponse> UpdateApiKey(string layerTwoPrivateKey, string apiKey, UpdateApiKeyRequest updateApiKeyRequest)
-        {
-            string requestBody = JsonFlattenHelper.Flatten(updateApiKeyRequest);
-            
-            var apiSig = UrlHelper.Sign(layerTwoPrivateKey, HttpMethod.Post, null, requestBody, "/api/v3/apiKey", _baseUrl);
-            var request = new RestRequest("/api/v3/apiKey", Method.Post);
-            request.AddHeader("x-api-key", apiKey);
-            request.AddHeader("x-api-sig", apiSig);
-            request.AddHeader("Accept", "application/json");
-            request.AddParameter("accountId", updateApiKeyRequest.AccountId);
-            // its not accepting the body "{\"resultInfo\":{\"code\":100001,\"message\":\"No body in request to generate signature base string\"}}"
-            request.AddParameter("application/json", requestBody, ParameterType.RequestBody);
-            var response = await _client.ExecuteAsync(request);
             var data = JsonConvert.DeserializeObject<ApiKeyResponse>(response.Content);
             return data;
         }
