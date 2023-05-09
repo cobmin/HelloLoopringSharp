@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace HelloLoopringSharp.ApiResponses
+namespace LoopringBatchMintNFTs.ApiResponses
 {
     public class Cached
     {

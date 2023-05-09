@@ -1,5 +1,5 @@
-﻿using HelloLoopringSharp.ApiRequests;
-using HelloLoopringSharp.ApiResponses;
+﻿using LoopringBatchMintNFTs.ApiRequests;
+using LoopringBatchMintNFTs.ApiResponses;
 using Maize;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelloLoopringSharp.Client
+namespace LoopringBatchMintNFTs.Client
 {
     public interface ILoopringClient
     {

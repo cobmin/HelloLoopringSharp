@@ -1,8 +1,8 @@
-﻿using HelloLoopringSharp.ApiRequests;
-using HelloLoopringSharp.ApiResponses;
-using HelloLoopringSharp.Client;
-using HelloLoopringSharp.Helpers;
-using HelloLoopringSharp.Models;
+﻿using LoopringBatchMintNFTs.ApiRequests;
+using LoopringBatchMintNFTs.ApiResponses;
+using LoopringBatchMintNFTs.Client;
+using LoopringBatchMintNFTs.Helpers;
+using LoopringBatchMintNFTs.Models;
 using Microsoft.Extensions.Configuration;
 using Nethereum.Signer;
 using Newtonsoft.Json;

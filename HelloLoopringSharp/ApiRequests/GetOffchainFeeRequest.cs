@@ -1,4 +1,4 @@
-﻿namespace HelloLoopringSharp.ApiResponses
+﻿namespace LoopringBatchMintNFTs.ApiResponses
 {
     public class GetOffchainFeeRequest
     {

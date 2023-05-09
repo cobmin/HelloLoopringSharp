@@ -1,4 +1,4 @@
-﻿namespace HelloLoopringSharp.ApiRequests
+﻿namespace LoopringBatchMintNFTs.ApiRequests
 {
     public class GetStorageIdRequest
     {

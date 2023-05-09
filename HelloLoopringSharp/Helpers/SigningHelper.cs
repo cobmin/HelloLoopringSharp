@@ -1,7 +1,7 @@
 using System.Numerics;
 using System.Security.Cryptography;
 
-namespace HelloLoopringSharp.Helpers
+namespace LoopringBatchMintNFTs.Helpers
 {
     public static class SigningHelper
     {

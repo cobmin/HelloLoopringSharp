@@ -1,9 +1,9 @@
-﻿using HelloLoopringSharp.Models;
+﻿using LoopringBatchMintNFTs.Models;
 using Multiformats.Hash;
 using PoseidonSharp;
 using System.Numerics;
 
-namespace HelloLoopringSharp.Helpers
+namespace LoopringBatchMintNFTs.Helpers
 {
     public class GenerateEddsaSignature
     {

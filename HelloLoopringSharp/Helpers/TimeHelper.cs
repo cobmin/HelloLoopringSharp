@@ -1,4 +1,4 @@
-﻿namespace HelloLoopringSharp.Helpers
+﻿namespace LoopringBatchMintNFTs.Helpers
 {
     public class TimeHelper
     {

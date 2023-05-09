@@ -1,12 +1,12 @@
-﻿using HelloLoopringSharp.ApiRequests;
-using HelloLoopringSharp.ApiResponses;
-using HelloLoopringSharp.Helpers;
-using HelloLoopringSharp.Models;
+﻿using LoopringBatchMintNFTs.ApiRequests;
+using LoopringBatchMintNFTs.ApiResponses;
+using LoopringBatchMintNFTs.Helpers;
+using LoopringBatchMintNFTs.Models;
 using Maize;
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace HelloLoopringSharp.Client
+namespace LoopringBatchMintNFTs.Client
 {
     public class LoopringClient : ILoopringClient, IDisposable
     {

@@ -1,4 +1,4 @@
-﻿namespace HelloLoopringSharp.Models
+﻿namespace LoopringBatchMintNFTs.Models
 {
     public class EddsaSignatureForMintRequest
     {

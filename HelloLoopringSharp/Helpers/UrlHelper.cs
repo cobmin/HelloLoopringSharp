@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace HelloLoopringSharp.Helpers
+namespace LoopringBatchMintNFTs.Helpers
 {
     public static class UrlHelper
     {

@@ -1,6 +1,6 @@
-﻿using HelloLoopringSharp.Models;
+﻿using LoopringBatchMintNFTs.Models;
 
-namespace HelloLoopringSharp.ApiRequests
+namespace LoopringBatchMintNFTs.ApiRequests
 {
     public class PostMintNftRequest
     {

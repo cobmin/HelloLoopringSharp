@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelloLoopringSharp.Helpers
+namespace LoopringBatchMintNFTs.Helpers
 {
     public static class JsonFlattenHelper
     {
