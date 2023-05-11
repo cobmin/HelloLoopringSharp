@@ -9,9 +9,6 @@ namespace Maize
         [JsonPropertyName("nftTokenId")]
         public int NftTokenId { get; set; }
         [JsonPropertyName("nftId")]
-
-        public string? NftId { get; set; }
-        [JsonPropertyName("nftData")]
         public string? NftData { get; set; }
         [JsonPropertyName("status")]
         public string? Status { get; set; }
@@ -21,9 +18,5 @@ namespace Maize
         public int AccountId { get; set; }
         [JsonPropertyName("storageId")]
         public int StorageId { get; set; }
-        [JsonPropertyName("metadataCid")]
-        public string? MetadataCid { get; set; }
-        [JsonPropertyName("errorMessage")]
-        public string? ErrorMessage { get; set; }
     }
 }
