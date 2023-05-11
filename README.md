@@ -1,7 +1,7 @@
 # Loopring Batch Mint NFTs
 C# Wrapper around the Loopring API focused on batch minting NFTs. 
 - Covers all the necessary API calls required to go from a Layer 1 API key to minting an NFT on Loopring.
-- Works with GameStop and Metamask. You
+- Works with GameStop and Metamask.
 - will need an active Loopring account, an NFT collection set up, and your JSON file CIDs ready for minting.
 
 Also, before minting you need to modify the appsettings.json file in the project directory with the setting "Copy to Output Directory" set to "Copy Always". Export out your Metamask or GameStop private key and input that into the appsettings.json file along with your Loopring Account ID. DO NOT SHARE THIS PRIVATE KEY WITH ANYONE ELSE AT ALL.
