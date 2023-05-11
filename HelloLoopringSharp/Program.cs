@@ -31,12 +31,12 @@ GetAccountRequest getAccountRequest = new GetAccountRequest()
 
 var account = await loopringClient.GetAccount(getAccountRequest);
 
-// Generate eddsaKeyPair from private key
-var ethereumSigner = new EthereumMessageSigner();
-var messageSignature = ethereumSigner.EncodeUTF8AndSign(account.KeySeed, new EthECKey(settings.LayerOnePrivateKey));
-var layerTwoPrivateKey = SigningHelper.GetLayerTwoPrivateKeyFromLayerOnePrivateKey(messageSignature).secretKey;
+// Generate eddsaKeyPair from private key 
+//var ethereumSigner = new EthereumMessageSigner();
+//var messageSignature = ethereumSigner.EncodeUTF8AndSign(account.KeySeed, new EthECKey(settings.LayerOnePrivateKey));
+//var layerTwoPrivateKey = SigningHelper.GetLayerTwoPrivateKeyFromLayerOnePrivateKey(messageSignature).secretKey;
 
-var apiKey = await loopringClient.GetApiKey(layerTwoPrivateKey, account.AccountId);
+var apiKey = await loopringClient.GetApiKey(settings.LoopringPrivateKey, account.AccountId);
 
 // find user collections 
 GetUserCollectionRequest getUserCollectionRequest = new GetUserCollectionRequest()
@@ -99,7 +99,7 @@ using (StreamReader reader = new StreamReader(input))
             Fee = offChainFee.Fees[settings.MaxFeeTokenId].Fee,
             ValidUntil = validUntil,
             OffchainId = storageId.OffchainId,
-            LayerTwoPrivateKey = layerTwoPrivateKey
+            LayerTwoPrivateKey = settings.LoopringPrivateKey
         };
         var eddsaSignatureForMintResponse = GenerateEddsaSignature.ForMinting(eddsaSignatureForMintRequest);
 

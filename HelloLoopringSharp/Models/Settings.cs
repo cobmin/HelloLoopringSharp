@@ -2,7 +2,7 @@
 {
     public class Settings
     {
-        public string LayerOnePrivateKey { get; set; }
+        public string LoopringPrivateKey { get; set; }
         public int AccountId { get; set; }
         public string Owner { get; set; }
         public int Network { get; set; }
